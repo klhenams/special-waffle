@@ -26,3 +26,5 @@ drf-spectacular==0.25.1  # https://github.com/tfranzel/drf-spectacular
 # dj-rest-auth for rest api social authentication
 dj-rest-auth==2.2.5  # https://github.com/iMerica/dj-rest-auth
 djangorestframework-simplejwt==5.2.2  # https://github.com/jazzband/djangorestframework-simplejwt
+# Google Spreadsheets Python API v4
+gspread==5.7.2 # https://github.com/burnash/gspread

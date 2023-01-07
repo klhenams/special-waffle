@@ -356,3 +356,11 @@ PASSWORD_RESET_LINK = env("DJANGO_PASSWORD_RESET_LINK", default=None)
 REST_AUTH_SERIALIZERS = {
     "PASSWORD_RESET_SERIALIZER": "app.users.serializers.authentication.CustomPasswordResetSerializer"
 }
+# Google API Console
+# ------------------------------------------------------------------------------
+GOOGLE_API = {
+    "GOOGLESHEET_SERVICE_ACCOUNT": str(
+        ROOT_DIR / env("GOOGLE_SHEET_SERVICE_ACCOUNT_FILENAME", default="gspread.json")
+    ),
+    "GOOGLESHEET_KEY": env("GOOGLE_SHEET_KEY", default=""),
+}
