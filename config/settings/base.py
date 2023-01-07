@@ -79,6 +79,7 @@ THIRD_PARTY_APPS = [
 
 LOCAL_APPS = [
     "app.users",
+    "app.spreadsheets"
     # Your stuff: custom apps go here
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -354,4 +355,12 @@ ACCOUNT_ACTIVATION_LINK = env("DJANGO_ACCOUNT_ACTIVATION_LINK", default=None)
 PASSWORD_RESET_LINK = env("DJANGO_PASSWORD_RESET_LINK", default=None)
 REST_AUTH_SERIALIZERS = {
     "PASSWORD_RESET_SERIALIZER": "app.users.serializers.authentication.CustomPasswordResetSerializer"
+}
+# Google API Console
+# ------------------------------------------------------------------------------
+GOOGLE_API = {
+    "GOOGLESHEET_SERVICE_ACCOUNT": str(
+        ROOT_DIR / env("GOOGLE_SHEET_SERVICE_ACCOUNT_FILENAME", default="gspread.json")
+    ),
+    "GOOGLESHEET_KEY": env("GOOGLE_SHEET_KEY", default=""),
 }
