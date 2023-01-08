@@ -367,3 +367,6 @@ GOOGLE_API = {
     ),
     "GOOGLESHEET_KEY": env("GOOGLE_SHEET_KEY", default=""),
 }
+# Google API Console
+# ------------------------------------------------------------------------------
+CACHE_TTL = env.int("DJANGO_CACHE_TTL", default=300)
