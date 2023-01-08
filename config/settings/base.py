@@ -75,10 +75,12 @@ THIRD_PARTY_APPS = [
     "dj_rest_auth",
     "corsheaders",
     "drf_spectacular",
+    "django_filters",
 ]
 
 LOCAL_APPS = [
     "app.users",
+    "app.spreadsheets"
     # Your stuff: custom apps go here
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -318,6 +320,11 @@ REST_FRAMEWORK = {
     ),
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+    # django-rest-framework pagination - https://www.django-rest-framework.org/api-guide/pagination/
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
+    "PAGE_SIZE": env.int("DRF_PAGE_SIZE", default=10),
+    # django-rest-framework django-filters - https://www.django-rest-framework.org/api-guide/filtering/#api-guide
+    "DEFAULT_FILTER_BACKENDS": ("django_filters.rest_framework.DjangoFilterBackend",),
 }
 
 # dj-rest-auth
@@ -355,3 +362,14 @@ PASSWORD_RESET_LINK = env("DJANGO_PASSWORD_RESET_LINK", default=None)
 REST_AUTH_SERIALIZERS = {
     "PASSWORD_RESET_SERIALIZER": "app.users.serializers.authentication.CustomPasswordResetSerializer"
 }
+# Google API Console
+# ------------------------------------------------------------------------------
+GOOGLE_API = {
+    "GOOGLESHEET_SERVICE_ACCOUNT": str(
+        ROOT_DIR / env("GOOGLE_SHEET_SERVICE_ACCOUNT_FILENAME", default="gspread.json")
+    ),
+    "GOOGLESHEET_KEY": env("GOOGLE_SHEET_KEY", default=""),
+}
+# Google API Console
+# ------------------------------------------------------------------------------
+CACHE_TTL = env.int("DJANGO_CACHE_TTL", default=300)
