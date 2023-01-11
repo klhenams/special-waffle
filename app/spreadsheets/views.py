@@ -1,4 +1,3 @@
-from django.conf import settings
 from django.core.cache import cache
 from rest_framework import filters, generics
 
@@ -18,7 +17,4 @@ class ItemListView(generics.ListAPIView):
             # get results from cache
             return cache.get("items")
         else:
-            results = Item.objects.all()
-            # store data in cache
-            cache.set("items", results, timeout=settings.CACHE_TTL)
-            return results
+            return Item.objects.all()
