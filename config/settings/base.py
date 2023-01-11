@@ -369,7 +369,9 @@ GOOGLE_API = {
         ROOT_DIR / env("GOOGLE_SHEET_SERVICE_ACCOUNT_FILENAME", default="gspread.json")
     ),
     "GOOGLESHEET_KEY": env("GOOGLE_SHEET_KEY", default=""),
+    "GOOGLESHEET_CHUNK": env.int("GOOGLE_SHEET_CHUNK", default=1000),
+    "GOOGLESHEET_LOW_BOUNDARY": env.int("GOOGLE_SHEET_LOW_BOUNDARY", default=2),
 }
-# Google API Console
+# Caching
 # ------------------------------------------------------------------------------
 CACHE_TTL = env.int("DJANGO_CACHE_TTL", default=300)
