@@ -1,5 +1,6 @@
 import gspread
 from django.conf import settings
+from django.core.cache import cache
 from django.utils.html import strip_tags
 
 from app.spreadsheets.models import Item
@@ -9,6 +10,9 @@ conf = getattr(settings, "GOOGLE_API", {})
 
 class Spreadsheet:
     gc = None
+    chuck = 5
+    lower_boundary = 2
+    data = []
 
     def __init__(self) -> None:
         try:
@@ -27,23 +31,46 @@ class Spreadsheet:
         except Exception as err:
             print("Fetching error: ", err)
 
+    def get_list(self):
+
+        try:
+            sh = self.gc.open_by_key(conf.get("GOOGLESHEET_KEY", None))
+            worksheet = sh.get_worksheet(0)
+        except gspread.exceptions.SpreadsheetNotFound as err:  # noqa F841
+            pass
+        except gspread.exceptions.WorksheetNotFound as err:  # noqa F841
+            pass
+        else:
+            return self.read_sheet_chunks(worksheet)
+
     def serialize_item(self, item) -> Item:
         # Clean description
-        item["description"] = strip_tags(item["description"])
-        return Item(**item)
+        # TODO: Clean other data cols
+        item[2] = strip_tags(item[2])
+        return Item(*item)
 
     def serialze_data(self, records):
         return [self.serialize_item(item) for item in records]
 
-    # def save_to_db(self, records):
-    #     # works for first time, and fails other scenarios
-    #     Item.objects.bulk_create(
-    #         [self.serialize_item(item) for item in records], batch_size=1000
-    #     )
+    def read_sheet_chunks(self, worksheet):
+        while 1 > 0:
+            try:
+                upper_boundary = self.lower_boundary + self.chuck
+                results = worksheet.get_values(
+                    f"A{self.lower_boundary}:C{upper_boundary}"
+                )
+                self.lower_boundary = upper_boundary + 1
+                self.data += self.serialze_data(results)
+                self.save_to_cache(self.data)
+            except gspread.exceptions.APIError as err:
+                if "exceeds grid limits" in str(err):
+                    break
+                else:
+                    pass
+            except Exception as err:
+                print("Fetching/serializing error: ", err, type(err))
+                return []
+        return self.data
 
-    # def save(self):
-    #     """
-    #     unset cache key if it exist
-    #     save to cache and then save to db
-    #     """
-    #     pass
+    def save_to_cache(self, records):
+        cache.set("items", records, timeout=settings.CACHE_TTL)
