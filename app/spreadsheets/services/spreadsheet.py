@@ -10,8 +10,8 @@ conf = getattr(settings, "GOOGLE_API", {})
 
 class Spreadsheet:
     gc = None
-    chuck = 5
-    lower_boundary = 2
+    chuck = conf.get("GOOGLESHEET_CHUNK")
+    lower_boundary = conf.get("GOOGLESHEET_LOW_BOUNDARY")
     data = []
 
     def __init__(self) -> None:
