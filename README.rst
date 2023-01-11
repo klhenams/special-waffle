@@ -1,4 +1,6 @@
-# Animated Octo Eureka
+Special Waffle
+================
+An application that fetches data from a Google Sheets document using `gspread`_ via `service account`_.
 
 Prerequisites
 -------------
@@ -11,10 +13,9 @@ Prerequisites
 .. _`installation guide`: https://docs.docker.com/compose/install/
 .. _`pre-commit`: https://pre-commit.com/#install
 .. _`Cookiecutter`: https://github.com/cookiecutter/cookiecutter
+.. _`gspread`: https://github.com/burnash/gspread
+.. _`service account`: https://docs.gspread.org/en/latest/oauth2.html
 
-Before Getting Started
-----------------------
-.. include:: generate-project-block.rst
 
 Build the Stack
 ---------------
